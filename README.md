@@ -21,11 +21,11 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 As a pizza application maker I should be able to create, read, update and delete pizza toppings.
 
-- [ ] It should have an API end point for creating a new topping
+- [x] It should have an API end point for creating a new topping
 - [x] It should have an API end point for getting a list of existing toppings
-- [ ] It should have an API end point to delete an existing topping
+- [x] It should have an API end point to delete an existing topping
 - [ ] It should have an API to update an existing topping
-- [ ] It should now allow duplicate toppings
+- [x] It should now allow duplicate toppings
 
 ### Pizza API
 

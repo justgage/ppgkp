@@ -37,6 +37,8 @@ defmodule PizzaParty.Toppings do
   """
   def get_topping!(id), do: Repo.get!(Topping, id)
 
+  def get_topping(id), do: Repo.get(Topping, id)
+
   @doc """
   Creates a topping.
 
@@ -46,7 +48,7 @@ defmodule PizzaParty.Toppings do
       {:ok, %Topping{}}
 
       iex> create_topping(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, String.t()}
 
   """
   def create_topping(attrs \\ %{}) do
@@ -67,7 +69,7 @@ defmodule PizzaParty.Toppings do
       {:ok, %Topping{}}
 
       iex> update_topping(topping, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, String.t()}
 
   """
   def update_topping(%Topping{} = topping, attrs) do
@@ -85,7 +87,7 @@ defmodule PizzaParty.Toppings do
       {:ok, %Topping{}}
 
       iex> delete_topping(topping)
-      {:error, %Ecto.Changeset{}}
+      {:error, String.t()}
 
   """
   def delete_topping(%Topping{} = topping) do
