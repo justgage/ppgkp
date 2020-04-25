@@ -3,18 +3,14 @@ defmodule PizzaParty.GraphQL.Types do
   GraphQL types for PizzaParty
   """
   use Absinthe.Schema.Notation
+  import_types(PizzaParty.GraphQL.Scalars.UUID)
 
   # --------------------------------------------------------------
   # Object Types
   # --------------------------------------------------------------
 
-  object :pizza_order do
-    field :status, :status
-  end
-
-  enum :status do
-    value(:not_started)
-    value(:baking)
-    value(:delivered)
+  object :topping do
+    field :id, :uuid
+    field :name, :string
   end
 end
