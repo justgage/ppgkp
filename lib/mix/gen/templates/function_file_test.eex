@@ -1,0 +1,12 @@
+defmodule PizzaParty.<%= facade_name %>.<%= function_name %>Test do
+  @moduledoc false
+  use Anakin.DataCase
+  alias Anakin.{<%= facade_name %>}
+
+  describe "<%= function_call %>" do
+    # TODO: better test description
+    test "given good arguments, does the right thing" do
+      assert <%= facade_name %>.<%= function_call %> == :potato
+    end
+  end
+end

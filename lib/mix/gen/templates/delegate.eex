@@ -1,0 +1,12 @@
+
+  # TODO: write docs for <%= function_file_module %>
+  @doc """
+  WRITE ME!
+
+  # Example
+      iex> <%= function_call %>
+  """
+  @trace :<%= function_name %>
+  # TODO: write type spec
+  # @spec <%= function_call %> :: {:ok, String.t()} | {:error, String.t()}
+  defdelegate <%= function_call %>, to: <%= function_file_module %>, as: :call

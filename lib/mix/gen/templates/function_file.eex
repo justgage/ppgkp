@@ -1,0 +1,7 @@
+defmodule PizzaParty.<%= facade_name %>.<%= function_name %> do
+  @moduledoc false
+
+  def call<%= arguments %> do
+    # TODO: write me
+  end
+end

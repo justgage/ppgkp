@@ -1,0 +1,8 @@
+defmodule PizzaParty.<%= facade_name %> do
+  # TODO: write docs for <%= facade_name %>
+  @moduledoc """
+  If you're confused by this file see the wiki on the Facade
+  pattern: https://podium.engineering/saner-apps-with-facade-pattern/
+  """
+
+end
