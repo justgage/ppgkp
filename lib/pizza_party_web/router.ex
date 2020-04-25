@@ -11,6 +11,11 @@ defmodule PizzaPartyWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    plug Plug.Parsers,
+      parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
+      pass: ["*/*"],
+      json_decoder: Jason
   end
 
   scope "/", PizzaPartyWeb do
@@ -21,7 +26,13 @@ defmodule PizzaPartyWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PizzaPartyWeb do
-  #   pipe_through :api
-  # end
+  scope "/graphql" do
+    pipe_through(:api)
+    forward "/api", Absinthe.Plug, schema: PizzaParty.GraphQL.Schema
+
+    forward "/docs",
+            Absinthe.Plug.GraphiQL,
+            schema: PizzaParty.GraphQL.Schema,
+            interface: :simple
+  end
 end
