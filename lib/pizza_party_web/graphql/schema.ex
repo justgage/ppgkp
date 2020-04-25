@@ -41,5 +41,18 @@ defmodule PizzaParty.GraphQL.Schema do
         end
       end)
     end
+
+    field :update_topping, type: :topping do
+      arg(:id, non_null(:uuid))
+      arg(:name, non_null(:string))
+
+      resolve(fn updates = %{id: id}, _info ->
+        with topping = %Topping{} <- Toppings.get_topping(id) do
+          Toppings.update_topping(topping, updates)
+        else
+          other -> {:error, "Unable to update because of: #{inspect(other)}"}
+        end
+      end)
+    end
   end
 end

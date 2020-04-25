@@ -24,7 +24,7 @@ As a pizza application maker I should be able to create, read, update and delete
 - [x] It should have an API end point for creating a new topping
 - [x] It should have an API end point for getting a list of existing toppings
 - [x] It should have an API end point to delete an existing topping
-- [ ] It should have an API to update an existing topping
+- [x] It should have an API to update an existing topping
 - [x] It should now allow duplicate toppings
 
 ### Pizza API
