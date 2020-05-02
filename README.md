@@ -31,11 +31,11 @@ As a pizza application maker I should be able to create, read, update and delete
 
 As a pizza application maker I should be able to create, read, update and delete pizzas.
 
-- [ ] It should have an API end point for creating a new pizza
-- [ ] It should have an API end point for getting a list of existing pizzas
-- [ ] It should have an API end point to delete an existing pizza
-- [ ] It should have an API to update an existing pizza
-- [ ] It should not allow duplicate pizzas
+- [x] It should have an API end point for creating a new pizza
+- [x] It should have an API end point for getting a list of existing pizzas
+- [x] It should have an API end point to delete an existing pizza
+- [x] It should have an API to update an existing pizza
+- [x] It should not allow duplicate pizzas
 
 ### Pizza Toppings API
 

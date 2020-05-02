@@ -106,4 +106,8 @@ defmodule PizzaParty.Toppings do
   def change_topping(%Topping{} = topping) do
     Topping.changeset(topping, %{})
   end
+
+  def pizzas(%Topping{} = topping) do
+    Repo.preload(topping, :pizzas)
+  end
 end
