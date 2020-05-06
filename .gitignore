@@ -3,6 +3,7 @@ backend/_build
 backend/db
 backend/deps
 backend/*.ez
+.elixir_ls
 
 # Generated on crash by the VM
 backend/erl_crash.dump
