@@ -12,6 +12,7 @@ import {
   Route,
   Link,
   useRouteMatch,
+  useHistory,
 } from 'react-router-dom';
 
 const cache = new InMemoryCache();
@@ -29,6 +30,10 @@ const GET_PIZZAS = gql`
     pizzas {
       id
       name
+      toppings {
+        id
+        name
+      }
     }
   }
 `;
@@ -128,6 +133,7 @@ const PizzaPage = () => {
 const HomePage = () => {
   const { data, loading, error } = useQuery(GET_PIZZAS);
   const [name, updateName] = useState('');
+  let history = useHistory();
   const [createPizza] = useMutation(CREATE_PIZZA, {
     variables: { name: name },
   });
@@ -140,24 +146,50 @@ const HomePage = () => {
   return (
     <div className="m-4">
       <h1 className="text-2xl">Pizzas</h1>
-      <form onSubmit={() => createPizza()}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateName('');
+          createPizza({
+            refetchQueries: [{ query: GET_PIZZAS }],
+          });
+        }}
+        className="mb-2"
+      >
         <input
           type="text"
           placeholder="New Pizza Name"
-          class=""
+          className="border border-black p-2"
+          value={name}
           onChange={(e) => updateName(e.target.value)}
         />
-        <button type="submit">Create New Pizza</button>
+        <button
+          className="border border-black p-2 ml-1 bg-green-100"
+          type="submit"
+        >
+          Create New Pizza →
+        </button>
       </form>
-      <div class="flex">
-        {data.pizzas.map((pizza) => {
+      <div>
+        {data.pizzas.map((pizza, i) => {
+          const colorClass =
+            (data.pizzas.length - i) % 2 == 0 ? 'bg-blue-100' : 'bg-yellow-100';
+          const toppings = pizza.toppings.map((t) => t.name).join(', ');
           return (
             <Link
-              className="bg-blue-100 p-4 items-center justify-center w-64 h-64 hover:bg-blue-200 pointer block mr-2"
+              className={`${colorClass} p-4 hover:bg-blue-200 pointer mb-2 flex`}
               key={pizza.id}
               to={`/pizza/${pizza.id}`}
             >
-              {pizza.name}
+              🍕 <strong>{pizza.name}</strong>{' '}
+              <span className="inline-block mx-2">👉</span>
+              <em>
+                {toppings == '' ? (
+                  <div className="text-gray-500">(no toppings)</div>
+                ) : (
+                  toppings
+                )}
+              </em>
             </Link>
           );
         })}

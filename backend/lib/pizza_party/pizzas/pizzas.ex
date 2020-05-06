@@ -19,7 +19,7 @@ defmodule PizzaParty.Pizzas do
 
   """
   def list_pizzas do
-    Repo.all(Pizza)
+    Repo.all(from(p in Pizza, order_by: [desc: p.inserted_at]))
   end
 
   @doc """
@@ -112,18 +112,7 @@ defmodule PizzaParty.Pizzas do
   end
 
   def add_topping(%Pizza{} = pizza, %Topping{} = topping) do
-    pizza_with_toppings =
-      toppings(pizza)
-      |> IO.inspect(
-        label:
-          ~s|\n\n\nDEBUGGING: ~/personal/pizza_party/backend/lib/pizza_party/pizzas/pizzas.ex:115\n\t|
-      )
-
-    topping
-    |> IO.inspect(
-      label:
-        ~s|\n\n\nDEBUGGING: ~/personal/pizza_party/backend/lib/pizza_party/pizzas/pizzas.ex:122\n\t|
-    )
+    pizza_with_toppings = toppings(pizza)
 
     pizza_with_toppings
     |> Ecto.Changeset.change()
