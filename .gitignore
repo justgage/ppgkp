@@ -1,11 +1,11 @@
 # App artifacts
-/_build
-/db
-/deps
-/*.ez
+backend/_build
+backend/db
+backend/deps
+backend/*.ez
 
 # Generated on crash by the VM
-erl_crash.dump
+backend/erl_crash.dump
 
 # Generated on crash by NPM
 npm-debug.log
@@ -27,3 +27,5 @@ npm-debug.log
 /backend/config/*.secret.exs
 
 /frontend/node_modules
+/frontend/.cache
+/frontend/dist
