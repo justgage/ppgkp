@@ -122,4 +122,16 @@ defmodule PizzaParty.Pizzas do
     )
     |> Repo.update()
   end
+
+  def remove_topping(%Pizza{} = pizza, %Topping{} = topping) do
+    pizza_with_toppings = toppings(pizza)
+
+    pizza_with_toppings
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(
+      :toppings,
+      Enum.reject(pizza_with_toppings.toppings, fn t -> t.id == topping.id end)
+    )
+    |> Repo.update()
+  end
 end
