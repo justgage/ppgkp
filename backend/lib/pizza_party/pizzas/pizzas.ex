@@ -112,10 +112,25 @@ defmodule PizzaParty.Pizzas do
   end
 
   def add_topping(%Pizza{} = pizza, %Topping{} = topping) do
-    pizza
-    |> toppings
+    pizza_with_toppings =
+      toppings(pizza)
+      |> IO.inspect(
+        label:
+          ~s|\n\n\nDEBUGGING: ~/personal/pizza_party/backend/lib/pizza_party/pizzas/pizzas.ex:115\n\t|
+      )
+
+    topping
+    |> IO.inspect(
+      label:
+        ~s|\n\n\nDEBUGGING: ~/personal/pizza_party/backend/lib/pizza_party/pizzas/pizzas.ex:122\n\t|
+    )
+
+    pizza_with_toppings
     |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:toppings, [topping])
+    |> Ecto.Changeset.put_assoc(
+      :toppings,
+      Enum.uniq_by([topping | pizza_with_toppings.toppings], fn topping -> topping.name end)
+    )
     |> Repo.update()
   end
 end

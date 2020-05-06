@@ -45,7 +45,8 @@ defmodule PizzaParty.Mixfile do
       {:phoenix, "~> 1.3.4"},
       {:plug_cowboy, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.1"},
+      {:cors_plug, "~> 2.0"}
     ]
   end
 

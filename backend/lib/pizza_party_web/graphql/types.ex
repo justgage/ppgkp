@@ -3,7 +3,6 @@ defmodule PizzaParty.GraphQL.Types do
   GraphQL types for PizzaParty
   """
   use Absinthe.Schema.Notation
-  alias PizzaParty.Toppings
   alias PizzaParty.Pizzas
   import_types(PizzaParty.GraphQL.Scalars.UUID)
 
@@ -12,13 +11,13 @@ defmodule PizzaParty.GraphQL.Types do
   # --------------------------------------------------------------
 
   object :topping do
-    field :id, :uuid
-    field :name, :string
+    field(:id, :uuid)
+    field(:name, :string)
   end
 
   object :pizza do
-    field :id, :uuid
-    field :name, :string
+    field(:id, :uuid)
+    field(:name, :string)
 
     field :toppings, list_of(:topping) do
       resolve(fn pizza, _, _ ->

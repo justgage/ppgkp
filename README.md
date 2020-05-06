@@ -4,6 +4,7 @@
 
 To start your Phoenix server:
 
+- go to backend folder `cd backend`
 - Install dependencies with `mix deps.get`
 - Create and migrate your database with `mix ecto.create && mix ecto.migrate`
 - Install Node.js dependencies with `cd assets && npm install`
@@ -12,6 +13,12 @@ To start your Phoenix server:
 Now you can visit [`localhost:4111/graphql/docs`](http://localhost:4111/graphql/docs) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+
+To start frontend:
+
+- `cd frontend`
+- `yarn`
+- `yarn start`
 
 # Requirements
 

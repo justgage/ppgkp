@@ -23,11 +23,17 @@ defmodule PizzaParty.GraphQL.Schema do
     end
 
     field :pizzas, type: list_of(:pizza) do
-      arg(:id, :uuid)
-
       resolve(fn %{}, _info ->
         pizzas = Pizzas.list_pizzas()
         {:ok, pizzas}
+      end)
+    end
+
+    field :pizza, type: :pizza do
+      arg(:id, non_null(:uuid))
+
+      resolve(fn %{id: id}, _info ->
+        {:ok, Pizzas.get_pizza(id)}
       end)
     end
   end
