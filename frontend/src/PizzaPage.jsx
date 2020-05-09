@@ -31,8 +31,8 @@ const ADD_TOPPINGS = gql`
 `;
 
 const REMOVE_TOPPINGS = gql`
-  mutation addToppings($pizzaId: UUID!, $toppingIds: [UUID!]!) {
-    addToppings(pizzaId: $pizzaId, toppingIds: $toppingIds) {
+  mutation removeToppings($pizzaId: UUID!, $toppingIds: [UUID!]!) {
+    removeToppings(pizzaId: $pizzaId, toppingIds: $toppingIds) {
       id
     }
   }
@@ -48,8 +48,11 @@ const PizzaPage = () => {
     variables: { pizzaId: id },
     refetchQueries: [{ query: GET_PIZZA, variables: { id } }],
   });
+  const [removeTopping] = useMutation(REMOVE_TOPPINGS, {
+    variables: { pizzaId: id },
+    refetchQueries: [{ query: GET_PIZZA, variables: { id } }],
+  });
 
-  console.log(data, loading, error);
   if (loading) return <div>Loading...</div>;
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
@@ -70,6 +73,7 @@ const PizzaPage = () => {
       <ul>
         {toppings.map(({ id: toppingId, name }) => {
           const hasTopping = _.some(pizzaToppings, { id: toppingId });
+          console.log(name, hasTopping);
 
           return (
             <li key={toppingId}>
@@ -79,9 +83,15 @@ const PizzaPage = () => {
                 name={name}
                 value={name}
                 checked={hasTopping}
-                onChange={() =>
-                  addTopping({ variables: { toppingIds: [toppingId] } })
-                }
+                onChange={() => {
+                  if (hasTopping) {
+                    console.log('remove');
+                    removeTopping({ variables: { toppingIds: [toppingId] } });
+                  } else {
+                    console.log('add');
+                    addTopping({ variables: { toppingIds: [toppingId] } });
+                  }
+                }}
               />
               <label htmlFor={id}>{name}</label>
             </li>
