@@ -112,14 +112,9 @@ defmodule PizzaParty.GraphQL.Schema do
       arg(:topping_ids, non_null(list_of(non_null(:uuid))))
 
       resolve(fn %{pizza_id: id, topping_ids: topping_ids}, _info ->
+        Pizzas.add_toppings(id, topping_ids)
+
         with pizza = %Pizza{} <- Pizzas.get_pizza(id) do
-          # FIXME: N+1 Query
-          Enum.each(topping_ids, fn topping_id ->
-            topping = Toppings.get_topping!(topping_id)
-
-            Pizzas.add_topping(pizza, topping)
-          end)
-
           {:ok, pizza}
         else
           other -> {:error, "Unable to update because of: #{inspect(other)}"}
@@ -131,19 +126,9 @@ defmodule PizzaParty.GraphQL.Schema do
       arg(:pizza_id, non_null(:uuid))
       arg(:topping_ids, non_null(list_of(non_null(:uuid))))
 
-      resolve(fn %{pizza_id: id, topping_ids: topping_ids}, _info ->
-        with pizza = %Pizza{} <- Pizzas.get_pizza(id) do
-          # FIXME: N+1 Query
-          Enum.each(topping_ids, fn topping_id ->
-            topping = Toppings.get_topping!(topping_id)
-
-            Pizzas.remove_topping(pizza, topping)
-          end)
-
-          {:ok, pizza}
-        else
-          other -> {:error, "Unable to update because of: #{inspect(other)}"}
-        end
+      resolve(fn %{pizza_id: pizza_id, topping_ids: topping_ids}, _info ->
+        Pizzas.remove_toppings(pizza_id, topping_ids)
+        {:ok, Pizzas.get_pizza(pizza_id)}
       end)
     end
   end

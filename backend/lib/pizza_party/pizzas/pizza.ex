@@ -7,7 +7,7 @@ defmodule PizzaParty.Pizzas.Pizza do
   @foreign_key_type :binary_id
   schema "pizzas" do
     field(:name, :string)
-    many_to_many :toppings, Topping, join_through: "pizzas_toppings"
+    many_to_many(:toppings, Topping, join_through: "pizzas_toppings")
     timestamps()
   end
 

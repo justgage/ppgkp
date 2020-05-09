@@ -9,6 +9,8 @@ defmodule PizzaParty.Pizzas do
   alias PizzaParty.Pizzas.Pizza
   alias PizzaParty.Toppings.Topping
 
+  @toppings_join_table "pizzas_toppings"
+
   @doc """
   Returns the list of pizzas.
 
@@ -19,7 +21,7 @@ defmodule PizzaParty.Pizzas do
 
   """
   def list_pizzas do
-    Repo.all(from(p in Pizza, order_by: [desc: p.inserted_at]))
+    Repo.all(from(p in Pizza, order_by: [desc: p.inserted_at], preload: [:toppings]))
   end
 
   @doc """
@@ -36,8 +38,8 @@ defmodule PizzaParty.Pizzas do
       ** (Ecto.NoResultsError)
 
   """
-  def get_pizza!(id), do: Repo.get!(Pizza, id)
-  def get_pizza(id), do: Repo.get(Pizza, id)
+  def get_pizza!(id), do: Repo.get!(toppings(Pizza), id)
+  def get_pizza(id), do: Repo.get(toppings(Pizza), id)
 
   @doc """
   Creates a pizza.
@@ -107,31 +109,56 @@ defmodule PizzaParty.Pizzas do
     Pizza.changeset(pizza, %{})
   end
 
-  def toppings(%Pizza{} = pizza) do
-    Repo.preload(pizza, :toppings)
+  def toppings(query) do
+    from(query, preload: [:toppings])
   end
 
-  def add_topping(%Pizza{} = pizza, %Topping{} = topping) do
-    pizza_with_toppings = toppings(pizza)
+  def batch_toppings(_, pizza_string_ids) do
+    pizza_ids = uuid_binaries(pizza_string_ids)
 
-    pizza_with_toppings
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(
-      :toppings,
-      Enum.uniq_by([topping | pizza_with_toppings.toppings], fn topping -> topping.name end)
+    from(pt in @toppings_join_table,
+      join: t in Topping,
+      on: t.id == pt.topping_id,
+      where: pt.pizza_id in ^pizza_ids,
+      select: t
     )
-    |> Repo.update()
+    |> Repo.all()
+    |> Map.new(&{&1.id, &1})
   end
 
-  def remove_topping(%Pizza{} = pizza, %Topping{} = topping) do
-    pizza_with_toppings = toppings(pizza)
+  def add_toppings(pizza_id, topping_ids) do
+    with {:ok, pizza_id} <- Ecto.UUID.dump(pizza_id) do
+      topping_id_binaries = uuid_binaries(topping_ids)
 
-    pizza_with_toppings
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(
-      :toppings,
-      Enum.reject(pizza_with_toppings.toppings, fn t -> t.id == topping.id end)
+      records =
+        Enum.map(topping_id_binaries, fn topping_id ->
+          %{pizza_id: pizza_id, topping_id: topping_id}
+        end)
+
+      Repo.insert_all(@toppings_join_table, records)
+    end
+  end
+
+  def remove_toppings(pizza_id, topping_ids) do
+    with {:ok, pizza_id_binary} <- Ecto.UUID.dump(pizza_id) do
+      topping_id_binaries = uuid_binaries(topping_ids)
+
+      Repo.delete_all(
+        from(pt in @toppings_join_table,
+          where: pt.pizza_id == ^pizza_id_binary,
+          where: pt.topping_id in ^topping_id_binaries
+        )
+      )
+    end
+  end
+
+  defp uuid_binaries(string_uuids) do
+    Enum.flat_map(
+      string_uuids,
+      &case Ecto.UUID.dump(&1) do
+        {:ok, uuid} -> [uuid]
+        {:error, _} -> []
+      end
     )
-    |> Repo.update()
   end
 end
