@@ -10,22 +10,17 @@ defmodule PizzaPartyWeb.GraphQL.GetPizzasTest do
       }
       """
 
-      name1 = Ecto.UUID.generate()
-      {:ok, %{id: id1}} = Pizzas.create_pizza(%{name: name1})
-
-      name2 = Ecto.UUID.generate()
-      {:ok, %{id: id2}} = Pizzas.create_pizza(%{name: name2})
+      {:ok, %{id: id1}} = Pizzas.create_pizza(%{name: "1"})
+      {:ok, %{id: id2}} = Pizzas.create_pizza(%{name: "2"})
 
       assert conn
              |> post("/graphql/api", %{query: query})
-             |> json_response(200) == %{
-               "data" => %{
-                 "pizzas" => [
-                   %{"id" => id1, "name" => name1},
-                   %{"id" => id2, "name" => name2}
-                 ]
-               }
-             }
+             |> json_response(200)
+             |> get_in(["data", "pizzas"])
+             |> Enum.sort_by(& &1["name"]) == [
+               %{"id" => id1, "name" => "1"},
+               %{"id" => id2, "name" => "2"}
+             ]
     end
 
     test "returns nothing if nothing in the database", %{conn: conn} do

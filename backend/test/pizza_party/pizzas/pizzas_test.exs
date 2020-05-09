@@ -22,12 +22,12 @@ defmodule PizzaParty.PizzasTest do
 
     test "list_pizzas/0 returns all pizzas" do
       pizza = pizza_fixture()
-      assert Pizzas.list_pizzas() == [pizza]
+      assert Pizzas.list_pizzas() == [%{pizza | toppings: []}]
     end
 
     test "get_pizza!/1 returns the pizza with given id" do
       pizza = pizza_fixture()
-      assert Pizzas.get_pizza!(pizza.id) == pizza
+      assert Pizzas.get_pizza!(pizza.id).id == pizza.id
     end
 
     test "create_pizza/1 with valid data creates a pizza" do
@@ -50,7 +50,7 @@ defmodule PizzaParty.PizzasTest do
     test "update_pizza/2 with invalid data returns error changeset" do
       pizza = pizza_fixture()
       assert {:error, %Ecto.Changeset{}} = Pizzas.update_pizza(pizza, @invalid_attrs)
-      assert pizza == Pizzas.get_pizza!(pizza.id)
+      assert %{pizza | toppings: []} == Pizzas.get_pizza!(pizza.id)
     end
 
     test "delete_pizza/1 deletes the pizza" do
@@ -64,10 +64,10 @@ defmodule PizzaParty.PizzasTest do
       assert %Ecto.Changeset{} = Pizzas.change_pizza(pizza)
     end
 
-    test "add_topping/2 with valid data creates an association" do
+    test "add_toppings/2 with valid data creates an association" do
       assert {:ok, %Pizza{} = pizza} = Pizzas.create_pizza(@valid_attrs)
       assert {:ok, %Topping{} = topping} = Toppings.create_topping(%{name: "mushrooms"})
-      Pizzas.add_topping(pizza, topping)
+      Pizzas.add_toppings(pizza.id, [topping.id])
 
       assert %PizzaParty.Pizzas.Pizza{
                name: "some name",
@@ -76,7 +76,7 @@ defmodule PizzaParty.PizzasTest do
                    name: "mushrooms"
                  }
                ]
-             } = Pizzas.toppings(pizza)
+             } = Pizzas.get_pizza!(pizza.id)
     end
   end
 end

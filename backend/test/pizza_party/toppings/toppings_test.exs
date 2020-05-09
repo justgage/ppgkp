@@ -54,7 +54,7 @@ defmodule PizzaParty.ToppingsTest do
 
     test "delete_topping/1 deletes the topping" do
       topping = topping_fixture()
-      assert {:ok, %Topping{}} = Toppings.delete_topping(topping)
+      assert :ok = Toppings.delete_topping(topping.id)
       assert_raise Ecto.NoResultsError, fn -> Toppings.get_topping!(topping.id) end
     end
 
