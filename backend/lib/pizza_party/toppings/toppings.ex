@@ -8,6 +8,8 @@ defmodule PizzaParty.Toppings do
 
   alias PizzaParty.Toppings.Topping
 
+  @toppings_join_table "pizzas_toppings"
+
   @doc """
   Returns the list of topping.
 
@@ -90,8 +92,19 @@ defmodule PizzaParty.Toppings do
       {:error, String.t()}
 
   """
-  def delete_topping(%Topping{} = topping) do
-    Repo.delete(topping)
+  def delete_topping(topping_id) do
+    with {:ok, topping_id_binary} <- Ecto.UUID.dump(topping_id) do
+      Repo.delete_all(
+        from(pt in @toppings_join_table,
+          where: pt.topping_id == ^topping_id_binary
+        )
+      )
+
+      Repo.delete_all(from(t in Topping, where: t.id == ^topping_id))
+      :ok
+    else
+      other -> {:error, "Unable to delete because of: #{inspect(other)}"}
+    end
   end
 
   @doc """

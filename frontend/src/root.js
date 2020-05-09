@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
@@ -7,6 +7,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from '@apollo/react-hooks';
 import PizzaPage from './PizzaPage';
 import HomePage from './HomePage';
+import SettingsPage from './SettingsPage';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -23,11 +24,19 @@ export default () => {
     <Router>
       <ApolloProvider client={client}>
         <Switch>
+          <Route path="/settings">
+            <SettingsPage />
+          </Route>
           <Route path="/pizza/:id">
             <PizzaPage />
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <HomePage />
+          </Route>
+
+          <Route>
+            <h1>404: Page not found</h1>
+            <Link to="/">Go back</Link>
           </Route>
         </Switch>
       </ApolloProvider>

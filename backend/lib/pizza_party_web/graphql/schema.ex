@@ -48,14 +48,12 @@ defmodule PizzaParty.GraphQL.Schema do
       end)
     end
 
-    field :delete_topping, type: :topping do
+    field :delete_topping, type: :string do
       arg(:id, non_null(:uuid))
 
       resolve(fn %{id: id}, _info ->
-        with topping = %Topping{} <- Toppings.get_topping(id) do
-          Toppings.delete_topping(topping)
-        else
-          other -> {:error, "Unable to delete because of: #{inspect(other)}"}
+        with :ok <- Toppings.delete_topping(id) do
+          {:ok, "deleted"}
         end
       end)
     end

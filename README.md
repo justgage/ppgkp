@@ -49,8 +49,8 @@ As a pizza application maker I should be able to create, read, update and delete
 As a pizza application maker I should be able to view/add/remove toppings from my pizza creations.
 
 - [x] It should have an API end point to add an existing topping to a pizza
-- [ ] It should have an API end point to remove a topping from a pizza
-- [ ] It should have an API end point to view toppings for a pizza
+- [x] It should have an API end point to remove a topping from a pizza
+- [x] It should have an API end point to view toppings for a pizza
 
 _Bonus:_ Make API documentation publicly available.
 
@@ -128,9 +128,9 @@ As a pizza operation manager I should be able to manage toppings available for m
 
 As a pizza chef I should be able to create new pizza master pieces
 
-- [ ] It should allow me to see a list of existing pizzas and their toppings
-- [ ] It should allow me to allow me to create a new pizza and add toppings to it
-- [ ] It should allow me to allow me to delete an existing pizza
+- [x] It should allow me to see a list of existing pizzas and their toppings
+- [x] It should allow me to allow me to create a new pizza and add toppings to it
+- [x] It should allow me to allow me to delete an existing pizza
 
 # Learn more
 

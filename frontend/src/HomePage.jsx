@@ -48,47 +48,67 @@ const HomePage = () => {
 
   const [deletePizza] = useMutation(DELETE_PIZZA);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
+  const { pizzas } = data;
 
-  console.log(data);
+  const nameTaken = pizzas.some((p) => p.name == name);
+
   return (
     <div className="m-4">
-      <h1 className="text-2xl">Pizzas</h1>
+      <nav className="flex items-baseline p-2 border-b mb-2">
+        <h1 className="text-2xl">Pizza Party</h1>
+        <div className="flex-grow" />
+        <Link className="border p-2" to="/settings">
+          Settings
+        </Link>
+      </nav>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          updateName('');
-          createPizza({
-            refetchQueries: [{ query: GET_PIZZAS }],
-          });
+          if (!nameTaken) {
+            updateName('');
+            createPizza({
+              refetchQueries: [{ query: GET_PIZZAS }],
+            });
+          }
         }}
         className="mb-2"
       >
         <input
           type="text"
-          placeholder="New Pizza Name"
-          className="border border-black p-2"
+          placeholder="Person the Pizza is for"
+          className={`border border-black p-2 ${
+            nameTaken ? 'border-red-500' : 'border-black'
+          }`}
           value={name}
           onChange={(e) => updateName(e.target.value)}
         />
         <button
-          className="border border-black p-2 ml-1 bg-green-100"
+          className="border border-black p-2 -ml-1 bg-green-100 hover:bg-green-200"
           type="submit"
         >
-          Create New Pizza →
+          Create Pizza 👨🏻‍🍳
         </button>
+        {nameTaken && <div class="text-red-500 italic">Name taken</div>}
       </form>
       <div>
         {data.pizzas.map((pizza, i) => {
           const colorClass =
-            (data.pizzas.length - i) % 2 == 0 ? 'bg-blue-100' : 'bg-yellow-100';
+            (data.pizzas.length - i) % 2 == 0
+              ? 'bg-blue-100 hover:bg-blue-200'
+              : 'bg-yellow-100  hover:bg-yellow-200';
           const toppings = pizza.toppings.map((t) => t.name).join(', ');
           return (
-            <div className="flex">
+            <div className={`${colorClass} pointer flex items-stretch mb-2`}>
               <Link
-                className={`${colorClass} p-4 hover:bg-blue-200 pointer mb-2 flex flex-grow`}
+                className="p-4 flex flex-grow"
                 key={pizza.id}
                 to={`/pizza/${pizza.id}`}
               >
@@ -104,16 +124,15 @@ const HomePage = () => {
                 <div className="flex-grow" />
               </Link>
               <button
-                className="p-2 hover:bg-red-500 hover:text-white"
+                className="p-2 hover:bg-red-100 hover:text-red-500"
                 onClick={(e) => {
-                  console.log(pizza);
                   deletePizza({
                     variables: { id: pizza.id },
                     refetchQueries: [{ query: GET_PIZZAS }],
                   });
                 }}
               >
-                🗑
+                cancel order
               </button>
             </div>
           );

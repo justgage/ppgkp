@@ -53,7 +53,12 @@ const PizzaPage = () => {
     refetchQueries: [{ query: GET_PIZZA, variables: { id } }],
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
 
@@ -62,38 +67,39 @@ const PizzaPage = () => {
     toppings,
   } = data;
 
-  console.log(toppings, pizzaToppings);
-
   return (
     <div className="m-4">
-      <h1 className="text-2xl">
-        <Link to="/">Pizzas</Link> → {data.pizza.name}
-      </h1>
+      <nav className="flex items-baseline p-2 border-b mb-2">
+        <h1 className="text-2xl">
+          <Link className="hover:underline" to="/">
+            Pizzas
+          </Link>{' '}
+          → {data.pizza.name}
+        </h1>
+      </nav>
       <h2 className="text-xl">Toppings:</h2>
-      <ul>
+      <ul className="list-disc ml-5">
         {toppings.map(({ id: toppingId, name }) => {
           const hasTopping = _.some(pizzaToppings, { id: toppingId });
-          console.log(name, hasTopping);
 
           return (
             <li key={toppingId}>
               <input
                 type="checkbox"
+                className="mr-2"
                 id={toppingId}
                 name={name}
                 value={name}
                 checked={hasTopping}
                 onChange={() => {
                   if (hasTopping) {
-                    console.log('remove');
                     removeTopping({ variables: { toppingIds: [toppingId] } });
                   } else {
-                    console.log('add');
                     addTopping({ variables: { toppingIds: [toppingId] } });
                   }
                 }}
               />
-              <label htmlFor={id}>{name}</label>
+              <label htmlFor={toppingId}>{name}</label>
             </li>
           );
         })}
