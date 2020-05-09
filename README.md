@@ -14,8 +14,6 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4111/graphql/docs`](http://localhost:4111/graphql/docs) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
-
 To start frontend:
 
 - `cd frontend`
