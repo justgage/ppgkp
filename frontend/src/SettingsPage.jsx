@@ -90,7 +90,7 @@ const SettingsPage = () => {
         })}
       </ul>
       <form
-        className="flex w-1/4 border"
+        className="flex w-full border"
         onSubmit={(e) => {
           e.preventDefault();
           createTopping({ variables: { name: toppingName } });

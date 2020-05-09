@@ -74,7 +74,7 @@ const PizzaPage = () => {
           <Link className="hover:underline" to="/">
             Pizzas
           </Link>{' '}
-          → {data.pizza.name}
+          → 🍕 {data.pizza.name}
         </h1>
       </nav>
       <h2 className="text-xl">Toppings:</h2>

@@ -98,7 +98,7 @@ const HomePage = () => {
         </button>
         {nameTaken && <div class="text-red-500 italic">Name taken</div>}
       </form>
-      <div>
+      <div className="mb-16">
         {data.pizzas.map((pizza, i) => {
           const colorClass =
             (data.pizzas.length - i) % 2 == 0
