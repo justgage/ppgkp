@@ -1,6 +1,4 @@
-# PizzaParty Code Review Submission
-
-_Gage Peterson's code submission_ 👉 [Resume](http://justgage.github.io/resume/)
+# Pizza Party
 
 ## Getting Started
 
