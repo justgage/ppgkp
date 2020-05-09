@@ -54,65 +54,9 @@ As a pizza application maker I should be able to view/add/remove toppings from m
 
 _Bonus:_ Make API documentation publicly available.
 
-After you've started the server you can look at some docs here 👉[GraphQL Docs](<http://0.0.0.0:4111/graphql/docs?query=mutation%20createPizza%20%7B%0A%20%20createPizza(name%3A%20%22Gage%27s%20Pizza%22)%20%7B%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20createTopping%20%7B%0A%20%20createTopping(name%3A%20%22Cheese%20(VEGAN)%22)%20%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%7D%0A%7D%0A%0Amutation%20deleteGagesPizza%20%7B%0A%20%20deletePizza(id%3A%20%22f1e1acfd-4a34-4318-ad4f-b4acf7df8644%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20updateGagesPizza%20%7B%0A%20%20updatePizza(id%3A%20%22f1e1acfd-4a34-4318-ad4f-b4acf7df8644%22%2C%20name%3A%20%22Gage%27s%20special%20Pizza%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20addTopping%20%7B%0A%20%20addToppings(pizzaId%3A%20%22d6855a7b-fde0-46b2-abd9-6f1a8f23908e%22%2C%20toppingIds%3A%20%5B%2275d8062f-6000-4b0e-8b70-4895a88a418d%22%5D)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Aquery%20getAll%20%7B%0A%20%20pizzas%20%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20toppings%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20%0A%20%20toppings%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D>)
+After you've started the server you can look here for some example queries (non-exhaustive) 👉[GraphQL Docs](<http://0.0.0.0:4111/graphql/docs?query=mutation%20createPizza%20%7B%0A%20%20createPizza(name%3A%20%22Gage%27s%20Pizza%22)%20%7B%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20createTopping%20%7B%0A%20%20createTopping(name%3A%20%22Cheese%20(VEGAN)%22)%20%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%7D%0A%7D%0A%0Amutation%20deleteGagesPizza%20%7B%0A%20%20deletePizza(id%3A%20%22f1e1acfd-4a34-4318-ad4f-b4acf7df8644%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20updateGagesPizza%20%7B%0A%20%20updatePizza(id%3A%20%22f1e1acfd-4a34-4318-ad4f-b4acf7df8644%22%2C%20name%3A%20%22Gage%27s%20special%20Pizza%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Amutation%20addTopping%20%7B%0A%20%20addToppings(pizzaId%3A%20%22d6855a7b-fde0-46b2-abd9-6f1a8f23908e%22%2C%20toppingIds%3A%20%5B%2275d8062f-6000-4b0e-8b70-4895a88a418d%22%5D)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D%0A%0Aquery%20getAll%20%7B%0A%20%20pizzas%20%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20toppings%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20%0A%20%20toppings%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%7D%0A%7D>)
 
-```graphql
-mutation createPizza {
-  createPizza(name: "Gage's Pizza") {
-    id
-  }
-}
-
-mutation createTopping {
-  createTopping(name: "Cheese (VEGAN)") {
-    id
-    name
-  }
-}
-
-mutation deleteGagesPizza {
-  deletePizza(id: "f1e1acfd-4a34-4318-ad4f-b4acf7df8644") {
-    name
-    id
-  }
-}
-
-mutation updateGagesPizza {
-  updatePizza(
-    id: "f1e1acfd-4a34-4318-ad4f-b4acf7df8644"
-    name: "Gage's special Pizza"
-  ) {
-    name
-    id
-  }
-}
-
-mutation addTopping {
-  addToppings(
-    pizzaId: "d6855a7b-fde0-46b2-abd9-6f1a8f23908e"
-    toppingIds: ["75d8062f-6000-4b0e-8b70-4895a88a418d"]
-  ) {
-    name
-    id
-  }
-}
-
-query getAll {
-  pizzas {
-    id
-    name
-    toppings {
-      id
-      name
-    }
-  }
-
-  toppings {
-    name
-    id
-  }
-}
-```
+If you're unfamiliar with GraphQL I would suggest reading about it on the official website https://graphql.org/.
 
 ## Front End Stories
 
@@ -120,9 +64,9 @@ query getAll {
 
 As a pizza operation manager I should be able to manage toppings available for my pizza chefs.
 
-- [ ] It should allow me to see a list of available toppings
-- [ ] It should allow me to add a new topping
-- [ ] It should allow me to delete an existing topping
+- [x] It should allow me to see a list of available toppings
+- [x] It should allow me to add a new topping
+- [x] It should allow me to delete an existing topping
 
 ### Manage Pizzas
 
