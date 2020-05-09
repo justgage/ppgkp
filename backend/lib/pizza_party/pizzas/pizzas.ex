@@ -93,7 +93,21 @@ defmodule PizzaParty.Pizzas do
 
   """
   def delete_pizza(%Pizza{} = pizza) do
-    Repo.delete(pizza)
+    with :ok <- remove_all_toppings(pizza.id) do
+      Repo.delete(pizza)
+    end
+  end
+
+  def remove_all_toppings(pizza_id) do
+    with {:ok, pizza_id_binary} <- Ecto.UUID.dump(pizza_id) do
+      Repo.delete_all(
+        from(pt in @toppings_join_table,
+          where: pt.pizza_id == ^pizza_id_binary
+        )
+      )
+
+      :ok
+    end
   end
 
   @doc """

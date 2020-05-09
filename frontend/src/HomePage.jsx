@@ -31,12 +31,22 @@ const CREATE_PIZZA = gql`
   }
 `;
 
+const DELETE_PIZZA = gql`
+  mutation deletePizza($id: UUID!) {
+    deletePizza(id: $id) {
+      id
+    }
+  }
+`;
+
 const HomePage = () => {
   const { data, loading, error } = useQuery(GET_PIZZAS);
   const [name, updateName] = useState('');
   const [createPizza] = useMutation(CREATE_PIZZA, {
     variables: { name: name },
   });
+
+  const [deletePizza] = useMutation(DELETE_PIZZA);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <p>ERROR</p>;
@@ -76,21 +86,36 @@ const HomePage = () => {
             (data.pizzas.length - i) % 2 == 0 ? 'bg-blue-100' : 'bg-yellow-100';
           const toppings = pizza.toppings.map((t) => t.name).join(', ');
           return (
-            <Link
-              className={`${colorClass} p-4 hover:bg-blue-200 pointer mb-2 flex`}
-              key={pizza.id}
-              to={`/pizza/${pizza.id}`}
-            >
-              🍕 <strong>{pizza.name}</strong>
-              <span className="inline-block mx-2">👉</span>
-              <em>
-                {toppings == '' ? (
-                  <div className="text-gray-500">(no toppings)</div>
-                ) : (
-                  toppings
-                )}
-              </em>
-            </Link>
+            <div className="flex">
+              <Link
+                className={`${colorClass} p-4 hover:bg-blue-200 pointer mb-2 flex flex-grow`}
+                key={pizza.id}
+                to={`/pizza/${pizza.id}`}
+              >
+                🍕 <strong>{pizza.name}</strong>
+                <span className="inline-block mx-2">👉</span>
+                <em>
+                  {toppings == '' ? (
+                    <div className="text-gray-500">(no toppings)</div>
+                  ) : (
+                    toppings
+                  )}
+                </em>
+                <div className="flex-grow" />
+              </Link>
+              <button
+                className="p-2 hover:bg-red-500 hover:text-white"
+                onClick={(e) => {
+                  console.log(pizza);
+                  deletePizza({
+                    variables: { id: pizza.id },
+                    refetchQueries: [{ query: GET_PIZZAS }],
+                  });
+                }}
+              >
+                🗑
+              </button>
+            </div>
           );
         })}
       </div>
